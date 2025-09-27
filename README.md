@@ -1,1 +1,0 @@
-# ARCHITECT-M.N.H
