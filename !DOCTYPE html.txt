@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mohammed Nour Hasan - Portfolio</title>
+<style>
+body {margin:0;font-family:'Arial',sans-serif;background:linear-gradient(to bottom,#002e6e,#4a4a4a);color:#fff;display:flex;flex-direction:column;align-items:center;min-height:100vh;transition:background 0.5s, filter 0.5s;}
+.logo{margin-top:40px;width:150px;filter:drop-shadow(0 0 10px rgba(255,255,255,0.7));transition:transform 0.3s,filter 0.3s;}
+.logo:hover{transform:scale(1.1);filter:drop-shadow(0 0 25px rgba(255,255,255,1));}
+.name{margin-top:20px;font-size:2rem;font-weight:bold;text-align:center;color:#fff;text-shadow:1px 1px 5px rgba(0,0,0,0.5);}
+.title{font-size:1.2rem;margin-top:5px;color:#ccc;text-shadow:1px 1px 3px rgba(0,0,0,0.3);}
+.contact{margin-top:30px;text-align:center;}
+.contact img{width:120px;margin:10px;transition:transform 0.3s, filter 0.3s;}
+.contact img:hover{transform:scale(1.1);filter:drop-shadow(0 0 15px rgba(255,255,255,0.7));}
+.phone{margin-top:10px;font-size:1rem;color:#fff;text-shadow:1px 1px 3px rgba(0,0,0,0.3);}
+.decorative-circle{position:absolute;border-radius:50%;background:rgba(255,255,255,0.05);width:300px;height:300px;top:20%;left:10%;z-index:0;animation:float 10s ease-in-out infinite;}
+.decorative-circle2{position:absolute;border-radius:50%;background:rgba(255,255,255,0.05);width:200px;height:200px;bottom:15%;right:10%;z-index:0;animation:float 12s ease-in-out infinite reverse;}
+@keyframes float {0%,100%{transform:translateY(0);}50%{transform:translateY(20px);}}
+.portfolio{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;width:90%;max-width:1200px;margin:30px auto;z-index:1;}
+.portfolio-item{position:relative;overflow:hidden;border-radius:15px;cursor:pointer;transition:transform 0.4s, box-shadow 0.4s;}
+.portfolio-item:hover{transform:translateY(-5px);box-shadow:0 10px 25px rgba(0,0,0,0.5);}
+.portfolio-item img{width:100%;display:block;transition:transform 0.5s,filter 0.5s;}
+.portfolio-item:hover img{transform:scale(1.1);filter:brightness(1.1);}
+.portfolio-overlay{position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,46,110,0.7);color:#fff;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.4s, transform 0.4s;font-size:1.2rem;text-align:center;padding:10px;transform:translateY(100%);}
+.portfolio-item:hover .portfolio-overlay{opacity:1;transform:translateY(0);}
+.lightbox{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);display:none;align-items:center;justify-content:center;z-index:9999;overflow:hidden;transition:opacity 0.5s;}
+.lightbox.active{display:flex;opacity:1;}
+.lightbox img{max-width:90%;max-height:90%;border-radius:10px;transform:scale(0.7);transition:transform 0.5s ease, opacity 0.5s ease;opacity:0;}
+.lightbox.active img{transform:scale(1);opacity:1;}
+body.blur {filter:blur(5px);}
+.close-btn{position:absolute;top:30px;right:30px;color:#fff;font-size:2rem;font-weight:bold;cursor:pointer;text-decoration:none;transition:transform 0.3s;}
+.close-btn:hover{transform:rotate(90deg) scale(1.2);}
+.nav-arrow{position:absolute;top:50%;transform:translateY(-50%);font-size:3rem;color:#fff;cursor:pointer;user-select:none;transition:transform 0.3s, color 0.3s;}
+.nav-arrow:hover{transform:translateY(-50%) scale(1.2);color:#ffd700;}
+.nav-left{left:20px;}
+.nav-right{right:20px;}
+.controls{margin:20px;display:flex;gap:20px;flex-wrap:wrap;}
+.controls button{padding:10px 20px;font-size:1rem;border:none;border-radius:10px;cursor:pointer;background:linear-gradient(45deg,#fff,#ccc);color:#002e6e;font-weight:bold;box-shadow:0 5px 15px rgba(0,0,0,0.3);transition:all 0.3s;}
+.controls button:hover{background:linear-gradient(45deg,#ccc,#fff);box-shadow:0 8px 20px rgba(0,0,0,0.5);}
+.controls input[type="file"]{display:none;}
+#preview{margin-top:10px;max-width:200px;border-radius:10px;box-shadow:0 5px 15px rgba(0,0,0,0.3);}
+</style>
+</head>
+<body>
+
+<div class="decorative-circle"></div>
+<div class="decorative-circle2"></div>
+
+<img src="logo.png" alt="Logo" class="logo">
+<div class="name">المهندس المعماري محمد نور حسن</div>
+<div class="title">Architect | مهندس معماري</div>
+<div class="contact">
+    <img src="qrcode.png" alt="QR Code">
+    <div class="phone">📞 +963 9XXXXXXXXX | واتساب</div>
+</div>
+
+<div class="controls">
+    <label for="projectFile" class="button">إضافة مشروع</label>
+    <input type="file" id="projectFile" accept="image/*">
+    <button onclick="deleteProject()">حذف آخر مشروع</button>
+</div>
+<img id="preview" src="" alt="معاينة الصورة">
+
+<div class="portfolio" id="portfolio"></div>
+
+<div id="lightboxContainer" class="lightbox">
+    <span class="close-btn" onclick="closeLightbox()">×</span>
+    <span class="nav-arrow nav-left" onclick="prevProject()">&#10094;</span>
+    <span class="nav-arrow nav-right" onclick="nextProject()">&#10095;</span>
+    <img id="lightboxImage" src="" alt="Project">
+</div>
+
+<script>
+let projectCount = 0;
+let projects = [];
+let currentLightboxIndex = 0;
+
+window.onload = function() {
+    const saved = localStorage.getItem('portfolioProjects');
+    if(saved){
+        projects = JSON.parse(saved);
+        projects.forEach(p => addProject(p.image,p.description,false));
+    }
+}
+
+document.getElementById('projectFile').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const imageData = e.target.result;
+        const description = prompt("أدخل وصف المشروع");
+        if(!description) return;
+        addProject(imageData, description,true);
+    };
+    reader.readAsDataURL(file);
+    event.target.value = '';
+});
+
+function addProject(imageUrl, description, save=true){
+    projectCount++;
+    const portfolio = document.getElementById('portfolio');
+
+    const projectDiv = document.createElement('div');
+    projectDiv.className = 'portfolio-item';
+    projectDiv.setAttribute('draggable', true);
+    projectDiv.innerHTML = `
+        <img src="${imageUrl}" alt="Project ${projectCount}" onclick="openLightbox(${projects.length})">
+        <div class="portfolio-overlay" onclick="editDescription(this)">${description}</div>
+    `;
+    portfolio.appendChild(projectDiv);
+
+    enableDragDrop();
+
+    if(save){
+        projects.push({image:imageUrl,description:description});
+        saveProjects();
+    }
+}
+
+function deleteProject(){
+    if(projectCount===0) return;
+    const portfolio=document.getElementById('portfolio');
+    portfolio.removeChild(portfolio.lastElementChild);
+    projects.pop();
+    saveProjects();
+    projectCount--;
+}
+
+// Lightbox مع تأثير ضبابية الخلفية
+function openLightbox(index){
+    currentLightboxIndex = index;
+    document.getElementById('lightboxImage').src = projects[index].image;
+    document.getElementById('lightboxContainer').classList.add('active');
+    document.body.classList.add('blur');
+}
+
+function closeLightbox(){
+    document.getElementById('lightboxContainer').classList.remove('active');
+    document.body.classList.remove('blur');
+}
+
+function nextProject(){
+    currentLightboxIndex = (currentLightboxIndex + 1) % projects.length;
+    document.getElementById('lightboxImage').src = projects[currentLightboxIndex].image;
+}
+
+function prevProject(){
+    currentLightboxIndex = (currentLightboxIndex - 1 + projects.length) % projects.length;
+    document.getElementById('lightboxImage').src = projects[currentLightboxIndex].image;
+}
+
+function editDescription(overlay){
+    const newDesc = prompt("عدل وصف المشروع:", overlay.textContent);
+    if(newDesc !== null){
+        overlay.textContent = newDesc;
+        const index = Array.from(document.getElementById('portfolio').children).indexOf(overlay.parentElement);
+        projects[index].description = newDesc;
+        saveProjects();
+    }
+}
+
+function saveProjects(){localStorage.setItem('portfolioProjects',JSON.stringify(projects));}
+
+// السحب والإفلات
+function enableDragDrop(){
+    const items = document.querySelectorAll('.portfolio-item');
+    items.forEach(item => {
+        item.addEventListener('dragstart', dragStart);
+        item.addEventListener('dragover', dragOver);
+        item.addEventListener('drop', drop);
+        item.addEventListener('dragend', dragEnd);
+    });
+}
+let draggedItem=null;
+function dragStart(e){draggedItem=this; setTimeout(()=>this.style.display='none',0);}
+function dragOver(e){e.preventDefault();}
+function drop(){
+    if(this!==draggedItem){
+        const portfolio=this.parentNode;
+        portfolio.insertBefore(draggedItem,this);
+        updateProjectsOrder();
+    }
+}
+function dragEnd(){this.style.display='block'; draggedItem=null;}
+
+function updateProjectsOrder(){
+    const portfolio=document.getElementById('portfolio');
+    const items=portfolio.children;
+    const newOrder=[];
+    for(let i=0;i<items.length;i++){
+        const index = Array.from(document.getElementById('portfolio').children).indexOf(items[i]);
+        newOrder.push(projects[index]);
+    }
+    projects = newOrder;
+    saveProjects();
+}
+</script>
+
+</body>
+</html>
